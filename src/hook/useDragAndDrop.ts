@@ -174,8 +174,9 @@ const useDragAndDrop = (
       attrs: {
         name: "label-target",
         "data-item-type": "specialIcon",
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
+        fill: "#eee",
         value: 0,
         x: position.x,
         y: position.y,
