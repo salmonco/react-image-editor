@@ -28,6 +28,10 @@
     "name": "Icon"
   },
   {
+    "id": "specialIcon",
+    "name": "SpecialIcon"
+  },
+  {
     "id": "export",
     "name": "Export"
   }

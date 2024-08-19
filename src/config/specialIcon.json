@@ -1,0 +1,20 @@
+[
+  {
+    "type": "specialIcon",
+    "id": "waterTank",
+    "menu": "waterTank",
+    "icon": "moisture"
+  },
+  {
+    "type": "specialIcon",
+    "id": "sensor",
+    "menu": "sensor",
+    "icon": "circle"
+  },
+  {
+    "type": "specialIcon",
+    "id": "lighting",
+    "menu": "lighting",
+    "icon": "lightbulb"
+  }
+]

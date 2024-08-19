@@ -15,8 +15,9 @@ export type ItemData = {
   y: number;
   width: number;
   height: number;
-  fill: string;
   draggable: boolean;
+  fill?: string;
+  value?: number;
 } & Record<string, any>;
 
 export type ItemProps = {

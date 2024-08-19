@@ -15,7 +15,7 @@ import { StageData } from "../redux/currentStageData";
 
 const useDragAndDrop = (
   stageRef: MutableRefObject<Konva.Stage>,
-  dragBackgroudOrigin: MutableRefObject<Vector2d>,
+  dragBackgroudOrigin: MutableRefObject<Vector2d>
 ) => {
   const { createItem, updateItem } = useItem();
 
@@ -97,7 +97,7 @@ const useDragAndDrop = (
               curr.charCodeAt(0) >= 32 && curr.charCodeAt(0) <= 126
                 ? acc + data.fontSize * (3 / 5)
                 : acc + data.fontSize,
-            0,
+            0
           ),
         height: data.height,
         fill: "#00000",
@@ -166,10 +166,35 @@ const useDragAndDrop = (
     createItem(newIcon);
   };
 
+  const insertSpecialIcon = (e: DragEvent, data: { [key: string]: any }) => {
+    console.log("data", data);
+    const position = getFramePos(stageRef.current, e, 100, 100);
+    const newSpecialIcon: StageData = {
+      id: nanoid(),
+      attrs: {
+        name: "label-target",
+        "data-item-type": "specialIcon",
+        width: 100,
+        height: 100,
+        value: 0,
+        x: position.x,
+        y: position.y,
+        icon: data.icon,
+        menu: data.menu,
+        brightness: 0,
+        zIndex: 0,
+        updatedAt: Date.now(),
+      },
+      className: "sample-specialIcon",
+      children: [],
+    };
+    createItem(newSpecialIcon);
+  };
+
   const insertLine = (e: DragEvent, data: { [key: string]: any }) => {
     const position = getFramePos(stageRef.current, e, 100, 100);
-    const curvePoints
-      = data.name.indexOf("curve") !== -1
+    const curvePoints =
+      data.name.indexOf("curve") !== -1
         ? data.name.indexOf("one") !== -1
           ? [110, -10]
           : [80, -10, 10, 110]
@@ -215,6 +240,8 @@ const useDragAndDrop = (
         return insertShape(e, data);
       case TRIGGER.INSERT.ICON:
         return insertIcon(e, data);
+      case TRIGGER.INSERT.SPECIAL_ICON:
+        return insertSpecialIcon(e, data);
       case TRIGGER.INSERT.LINE:
         return insertLine(e, data);
       default:
@@ -229,7 +256,9 @@ const useDragAndDrop = (
     const items = stage
       .getChildren()[0]
       .getChildren(
-        (_item) => _item.attrs.name === "label-target" && _item.attrs["data-item-type"] !== "frame",
+        (_item) =>
+          _item.attrs.name === "label-target" &&
+          _item.attrs["data-item-type"] !== "frame"
       )
       .filter((_item) => isInFrame(frame, _item));
     return items;
@@ -260,9 +289,9 @@ const useDragAndDrop = (
 
   const moveToLayer = (item: Shape<ShapeConfig>) => {
     const newParent = item.getLayer();
-    item.getParent().children
-      = (item.getParent().children as Node<NodeConfig>[])?.filter(
-        (_item) => _item.id() !== item.id(),
+    item.getParent().children =
+      (item.getParent().children as Node<NodeConfig>[])?.filter(
+        (_item) => _item.id() !== item.id()
       ) ?? item.getParent().children;
     if (newParent) {
       newParent.add(item);
@@ -314,25 +343,25 @@ const isInFrame = (targetFrame: Node<NodeConfig>, item: Node<NodeConfig>) => {
     height: height * item.scaleY(),
   };
   return (
-    (position.x >= targetFrame.x()
-      && position.x <= targetFrame.x() + targetFrame.width()
-      && position.y >= targetFrame.y()
-      && position.y <= targetFrame.y() + targetFrame.height())
-    || (position.x + size.width >= targetFrame.x()
-      && position.x + size.width <= targetFrame.x() + targetFrame.width()
-      && position.y + size.height >= targetFrame.y()
-      && position.y + size.height <= targetFrame.y() + targetFrame.height())
-    || (position.x >= targetFrame.x()
-      && position.x <= targetFrame.x() + targetFrame.width()
-      && position.y + size.height >= targetFrame.y()
-      && position.y + size.height <= targetFrame.y() + targetFrame.height())
-    || (position.x + size.width >= targetFrame.x()
-      && position.x + size.width <= targetFrame.x() + targetFrame.width()
-      && position.y >= targetFrame.y()
-      && position.y <= targetFrame.y() + targetFrame.height())
-    || (position.x + size.width / 2 >= targetFrame.x()
-      && position.x + size.width / 2 <= targetFrame.x() + targetFrame.width()
-      && position.y + size.height / 2 >= targetFrame.y()
-      && position.y + size.height / 2 <= targetFrame.y() + targetFrame.height())
+    (position.x >= targetFrame.x() &&
+      position.x <= targetFrame.x() + targetFrame.width() &&
+      position.y >= targetFrame.y() &&
+      position.y <= targetFrame.y() + targetFrame.height()) ||
+    (position.x + size.width >= targetFrame.x() &&
+      position.x + size.width <= targetFrame.x() + targetFrame.width() &&
+      position.y + size.height >= targetFrame.y() &&
+      position.y + size.height <= targetFrame.y() + targetFrame.height()) ||
+    (position.x >= targetFrame.x() &&
+      position.x <= targetFrame.x() + targetFrame.width() &&
+      position.y + size.height >= targetFrame.y() &&
+      position.y + size.height <= targetFrame.y() + targetFrame.height()) ||
+    (position.x + size.width >= targetFrame.x() &&
+      position.x + size.width <= targetFrame.x() + targetFrame.width() &&
+      position.y >= targetFrame.y() &&
+      position.y <= targetFrame.y() + targetFrame.height()) ||
+    (position.x + size.width / 2 >= targetFrame.x() &&
+      position.x + size.width / 2 <= targetFrame.x() + targetFrame.width() &&
+      position.y + size.height / 2 >= targetFrame.y() &&
+      position.y + size.height / 2 <= targetFrame.y() + targetFrame.height())
   );
 };

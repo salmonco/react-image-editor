@@ -26,6 +26,9 @@ import useTool from "./hook/useTool";
 import TextItem, { TextItemProps } from "./view/object/text";
 import ShapeItem, { ShapeItemProps } from "./view/object/shape";
 import IconItem, { IconItemProps } from "./view/object/icon";
+import SpecialIconItem, {
+  SpecialIconItemProps,
+} from "./view/object/specialIcon";
 import LineItem, { LineItemProps } from "./view/object/line";
 import useModal from "./hook/useModal";
 import hotkeyList from "./config/hotkey.json";
@@ -61,7 +64,7 @@ function App() {
   const { stageData } = useItem(); // 현재 도형 데이터 가져오기
   const { stageDataList, initializeFileDataList, updateFileData } =
     useStageDataList(); // 스테이지 데이터 관리
-  // console.log(stageDataList);
+  console.log(stageDataList);
   const stage = useStage();
   const modal = useModal();
   const {
@@ -223,6 +226,15 @@ function App() {
           <IconItem
             key={`icon-${item.id}`}
             data={item as IconItemProps["data"]}
+            transformer={transformer}
+            onSelect={onSelectItem}
+          />
+        );
+      case "specialIcon":
+        return (
+          <SpecialIconItem
+            key={`specialIcon-${item.id}`}
+            data={item as SpecialIconItemProps["data"]}
             transformer={transformer}
             onSelect={onSelectItem}
           />

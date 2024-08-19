@@ -5,6 +5,7 @@ export default {
     TEXT: "INSERT_TEXT",
     SHAPE: "INSERT SHAPE",
     ICON: "INSERT ICON",
+    SPECIAL_ICON: "INSERT SPECIAL_ICON",
     LINE: "INSERT LINE",
   },
 };

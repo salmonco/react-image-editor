@@ -14,6 +14,7 @@ import useStage from "../hook/useStage";
 import ShapeWidget from "./widgetList/ShapeWidget";
 import IconWidget from "./widgetList/IconWidget";
 import LineWidget from "./widgetList/LineWidget";
+import SpecialIconWidget from "./widgetList/SpecialIconWidget";
 
 export type SettingBarProps = {
   selectedItems: Node<NodeConfig>[];
@@ -22,7 +23,9 @@ export type SettingBarProps = {
 };
 
 const Widgets = {
-  colorPalette: (data: WidgetKind & SettingBarProps) => <ColorPaletteWidget data={data} />,
+  colorPalette: (data: WidgetKind & SettingBarProps) => (
+    <ColorPaletteWidget data={data} />
+  ),
   align: (data: WidgetKind & SettingBarProps) => <AlignWidget data={data} />,
   image: (data: WidgetKind & SettingBarProps) => <ImageWidget />,
   frame: (data: WidgetKind & SettingBarProps) => <FrameWidget />,
@@ -30,6 +33,7 @@ const Widgets = {
   text: (data: WidgetKind & SettingBarProps) => <TextWidget />,
   line: (data: WidgetKind & SettingBarProps) => <LineWidget />,
   icon: (data: WidgetKind & SettingBarProps) => <IconWidget />,
+  specialIcon: (data: WidgetKind & SettingBarProps) => <SpecialIconWidget />,
   export: (data: WidgetKind & SettingBarProps) => <ExportWidget data={data} />,
 };
 

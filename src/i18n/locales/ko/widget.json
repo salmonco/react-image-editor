@@ -281,6 +281,10 @@
       "desc": "키워드로 아이콘을 검색하세요"
     }
   },
+  "specialIcon": {
+    "id": "specialIcon",
+    "name": "특수아이콘"
+  },
   "export": {
     "id": "export",
     "name": "내보내기",

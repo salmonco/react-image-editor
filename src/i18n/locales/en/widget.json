@@ -281,6 +281,10 @@
       "desc": "Type a keyword to find icon"
     }
   },
+  "specialIcon": {
+    "id": "specialIcon",
+    "name": "Special Icon"
+  },
   "export": {
     "id": "export",
     "name": "Export",
