@@ -1,3 +1,4 @@
+// Konva의 스테이지 객체와 관련된 상태를 관리
 import Konva from "konva";
 import { Vector2d } from "konva/lib/types";
 import { MutableRefObject, useRef } from "react";

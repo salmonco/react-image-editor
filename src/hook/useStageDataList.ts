@@ -1,3 +1,4 @@
+// 스테이지 데이터 리스트와 관련된 CRUD(생성, 읽기, 업데이트, 삭제) 작업을 관리
 import Konva from "konva";
 import { useDispatch, useSelector } from "react-redux";
 import { StageData, stageDataSelector } from "../redux/currentStageData";
@@ -59,14 +60,16 @@ const useStageDataList = () => {
   const changeStageData = (
     prevFileId: string,
     nextFileId: string,
-    targetStageData?: StageData[],
+    targetStageData?: StageData[]
   ) => {
     if (prevFileId && prevFileId !== nextFileId) {
       updateFileData({ id: prevFileId, data: stageData });
     }
     clearItems();
 
-    const newStageData = stageDataList.find((dataListItem) => dataListItem.id === nextFileId)?.data;
+    const newStageData = stageDataList.find(
+      (dataListItem) => dataListItem.id === nextFileId
+    )?.data;
     if (targetStageData || newStageData) {
       alterItems((targetStageData ?? newStageData)!);
     }

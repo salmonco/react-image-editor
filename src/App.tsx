@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Transformer } from "react-konva";
+import { Transformer } from "react-konva"; // 2D 그래픽을 쉽게 그릴 수 있게 해줌
 import { Node, NodeConfig } from "konva/lib/Node";
-import { useHotkeys } from "react-hotkeys-hook";
-import { nanoid } from "nanoid";
+import { useHotkeys } from "react-hotkeys-hook"; // 키보드 단축키를 쉽게 관리할 수 있도록 함
+import { nanoid } from "nanoid"; // 고유한 ID를 생성하는 라이브러리
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import Header from "./header";
 import Layout from "./layout";
@@ -43,20 +43,25 @@ export type FileKind = {
 export type FileData = Record<string, FileKind>;
 
 function App() {
-  const [past, setPast] = useState<StageData[][]>([]);
-  const [future, setFuture] = useState<StageData[][]>([]);
+  const [past, setPast] = useState<StageData[][]>([]); // 작업 이력(undo/redo) 기능을 구현하는 데 사용
+  const [future, setFuture] = useState<StageData[][]>([]); // 작업 이력(undo/redo) 기능을 구현하는 데 사용
   const { goToFuture, goToPast, recordPast, clearHistory } = useWorkHistory(
     past,
     future,
     setPast,
-    setFuture,
-  );
-  const transformer = useTransformer();
-  const { selectedItems, onSelectItem, setSelectedItems, clearSelection }
-    = useSelection(transformer);
-  const { tabList, onClickTab, onCreateTab, onDeleteTab } = useTab(transformer, clearHistory);
-  const { stageData } = useItem();
-  const { initializeFileDataList, updateFileData } = useStageDataList();
+    setFuture
+  ); // 작업 이력 관리 (undo/redo)
+  const transformer = useTransformer(); // 선택된 도형을 변형하기 위한 로직
+  const { selectedItems, onSelectItem, setSelectedItems, clearSelection } =
+    useSelection(transformer); // 선택된 아이템 관리
+  const { tabList, onClickTab, onCreateTab, onDeleteTab } = useTab(
+    transformer,
+    clearHistory
+  ); // 탭 관련 상태 관리
+  const { stageData } = useItem(); // 현재 도형 데이터 가져오기
+  const { stageDataList, initializeFileDataList, updateFileData } =
+    useStageDataList(); // 스테이지 데이터 관리
+  // console.log(stageDataList);
   const stage = useStage();
   const modal = useModal();
   const {
@@ -70,11 +75,14 @@ function App() {
     flipHorizontally,
     flipVertically,
   } = useHotkeyFunc();
-  const { getTranslation } = useI18n();
-  const [clipboard, setClipboard] = useState<StageData[]>([]);
+  const { getTranslation } = useI18n(); // 다국어 지원
+  const [clipboard, setClipboard] = useState<StageData[]>([]); // 복사한 아이템을 저장
+
+  // Konva 노드를 받아서 스테이지 데이터 객체를 생성
   const createStageDataObject = (item: Node<NodeConfig>): StageData => {
     const { id } = item.attrs;
-    const target = item.attrs["data-item-type"] === "frame" ? item.getParent() : item;
+    const target =
+      item.attrs["data-item-type"] === "frame" ? item.getParent() : item;
     return {
       id: nanoid(),
       attrs: {
@@ -84,6 +92,8 @@ function App() {
       children: [],
     };
   };
+
+  // 도형을 추가하거나 편집할 때 사용
   const { getClickCallback } = useTool(
     stage,
     modal,
@@ -91,11 +101,16 @@ function App() {
     setSelectedItems,
     transformer,
     createStageDataObject,
-    onSelectItem,
+    onSelectItem
   );
 
-  const currentTabId = useMemo(() => tabList.find((tab) => tab.active)?.id ?? null, [tabList]);
+  const currentTabId = useMemo(
+    () => tabList.find((tab) => tab.active)?.id ?? null,
+    [tabList]
+  );
 
+  // 레이어의 순서와 업데이트 시간을 반영하여 도형의 렌더링 순서를 결정
+  // stageData를 zIndex에 따라 정렬. zIndex가 동일할 경우, updatedAt 속성을 기준으로 정렬
   const sortedStageData = useMemo(
     () =>
       stageData.sort((a, b) => {
@@ -107,7 +122,7 @@ function App() {
         }
         return a.attrs.zIndex - b.attrs.zIndex;
       }),
-    [stageData],
+    [stageData]
   );
 
   const header = (
@@ -233,7 +248,7 @@ function App() {
       layerUp(selectedItems);
     },
     {},
-    [selectedItems],
+    [selectedItems]
   );
 
   useHotkeys(
@@ -243,7 +258,7 @@ function App() {
       layerDown(selectedItems);
     },
     {},
-    [selectedItems],
+    [selectedItems]
   );
 
   useHotkeys(
@@ -253,7 +268,7 @@ function App() {
       duplicateItems(selectedItems, createStageDataObject);
     },
     {},
-    [selectedItems, stageData],
+    [selectedItems, stageData]
   );
 
   useHotkeys(
@@ -263,7 +278,7 @@ function App() {
       copyItems(selectedItems, setClipboard, createStageDataObject);
     },
     {},
-    [selectedItems, stageData, clipboard],
+    [selectedItems, stageData, clipboard]
   );
 
   useHotkeys(
@@ -273,7 +288,7 @@ function App() {
       selectAll(stage, onSelectItem);
     },
     {},
-    [selectedItems],
+    [selectedItems]
   );
 
   useHotkeys(
@@ -283,7 +298,7 @@ function App() {
       pasteItems(clipboard);
     },
     {},
-    [clipboard],
+    [clipboard]
   );
 
   useHotkeys(
@@ -293,7 +308,7 @@ function App() {
       goToPast();
     },
     {},
-    [goToPast],
+    [goToPast]
   );
 
   useHotkeys(
@@ -303,7 +318,7 @@ function App() {
       goToFuture();
     },
     {},
-    [goToFuture],
+    [goToFuture]
   );
 
   useHotkeys(
@@ -313,7 +328,7 @@ function App() {
       flipHorizontally(selectedItems);
     },
     {},
-    [selectedItems],
+    [selectedItems]
   );
 
   useHotkeys(
@@ -323,7 +338,7 @@ function App() {
       flipVertically(selectedItems);
     },
     {},
-    [selectedItems],
+    [selectedItems]
   );
 
   useHotkeys(
@@ -333,7 +348,7 @@ function App() {
       deleteItems(selectedItems, setSelectedItems, transformer.transformerRef);
     },
     { enabled: Boolean(selectedItems.length) },
-    [selectedItems, transformer.transformerRef.current],
+    [selectedItems, transformer.transformerRef.current]
   );
 
   useEffect(() => {
@@ -364,7 +379,9 @@ function App() {
     <Layout header={header} navBar={navBar} settingBar={settingBar}>
       {hotkeyModal}
       <View onSelect={onSelectItem} stage={stage}>
-        {stageData.length ? sortedStageData.map((item) => renderObject(item)) : null}
+        {stageData.length
+          ? sortedStageData.map((item) => renderObject(item))
+          : null}
         <Transformer
           ref={transformer.transformerRef}
           keepRatio
